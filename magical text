@@ -1,0 +1,55 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Random;
+class MouseMagic extends JFrame
+{
+  JLabel la=new JLabel("TOUCH ME TO SEE MAGIC");
+  int x=20;int y=30;
+  Random ra=new Random();
+  boolean stop=false;
+  public MouseMagic()
+  {
+    setSize(400,400);
+    setResizable(false);
+    setLocationRelativeTo(null);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setLayout(null);
+    //la.setFont(nw Font("Arial",0,20));
+    la.setBounds(x,y,150,30);
+    add(la);
+    setVisible(true);
+    la.addMouseListener(new MagicListener());
+    this.addKeyListener(new StopListener());
+  } 
+  
+  class MagicListener extends MouseAdapter
+  {
+    public void mouseEntered(MouseEvent evt)
+    {
+      if(!stop)
+      {
+        x=ra.nextInt(250);
+        y=ra.nextInt(350);
+        la.setLocation(x,y);
+      }
+      stop=false;
+    }
+  }
+ 
+  class StopListener extends KeyAdapter
+  {
+    public void keyPressed(KeyEvent evt)
+    {
+      int kc=evt.getKeyCode();
+      if(kc==KeyEvent.VK_SPACE)
+      stop=true;
+    }
+  }
+
+  public static void main(String args[])
+  {
+    JFrame.setDefaultLookAndFeelDecorated(true);
+    new MouseMagic();
+  }
+}
