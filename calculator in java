@@ -1,0 +1,125 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+class Calculator extends JFrame
+{
+    JTextField t=new JTextField("0");
+    JLabel p=new JLabel();
+    JButton []bt=new JButton[20];
+   
+    String op="";int flag=0;Float num;
+
+  public Calculator()
+  {
+      super("Calculator");
+      
+    setSize(400,400);
+    setResizable(false);
+    setLocationRelativeTo(null);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setLayout(null);
+    t.setBounds(10,10,370,50);
+    t.setEditable(false);
+    t.setFont(new Font("Latin",0,30));
+    t.setHorizontalAlignment(JTextField.RIGHT);
+    t.setBackground(Color.white);
+    t.setBorder(BorderFactory.createLineBorder(Color.black,1));
+    add(t);
+    p.setBounds(10,80,370,270);
+    add(p);
+    p.setLayout(new GridLayout(5,4,5,5));
+    String str[]={"BACK","CE","C","%","7","8","9","/","4","5","6","*","1","2","3","-","0",".","=","+"};
+    
+    Insets ins=new Insets(0,0,0,0);
+    Listener lis=new Listener();
+    
+    for(int i=0;i<20;i++)
+          {
+     
+    bt[i]=new JButton(str[i]);
+     bt[i].setFont(new Font("Arial",Font.PLAIN,20));
+   p.add(bt[i]);bt[i].addActionListener(lis);
+   if(i==3 || i==7 || i==11 ||i==15 || i==19)
+   bt[i].setForeground(Color.red);
+   else
+   bt[i].setForeground(Color.blue); 
+   }
+     setVisible(true);
+
+  }
+  class Listener implements ActionListener
+  { 
+     public void actionPerformed(ActionEvent evt)
+    {
+     JButton bc=(JButton)evt.getSource();
+     String x=bc.getText();
+     String y=t.getText();
+     if(x.equals("*") || x.equals("+") || x.equals("-") || x.equals("/") || x.equals("%"))
+      {
+      //num=Integer.parseInt(y);
+      try{ num=Float.valueOf(y.trim()).floatValue();}catch(NumberFormatException nf)
+{
+System.out.println(nf.getMessage());
+}
+      op=x;
+      flag=1;
+      }
+     if(x.equals("="))
+      {
+        /* if(op.equals("+"))
+         t.setText(String.valueOf(num+Integer.parseInt(y)));
+         if(op.equals("*"))
+         t.setText(String.valueOf(num*Integer.parseInt(y)));
+         if(op.equals("/"))
+         t.setText(String.valueOf(num/Integer.parseInt(y)));
+         if(op.equals("-"))
+         t.setText(String.valueOf(num-Integer.parseInt(y)));
+         if(op.equals("%"))
+         t.setText(String.valueOf(num%Integer.parseInt(y))); */
+if(op.equals("+"))
+         try {t.setText(String.valueOf(num+Float.valueOf(y.trim()).floatValue()));
+         if(op.equals("*"))
+         t.setText(String.valueOf(num*Float.valueOf(y.trim()).floatValue()));
+         if(op.equals("/"))
+         t.setText(String.valueOf(num/Float.valueOf(y.trim()).floatValue()));
+         if(op.equals("-"))
+         t.setText(String.valueOf(num-Float.valueOf(y.trim()).floatValue()));
+         if(op.equals("%"))
+         t.setText(String.valueOf(num%Float.valueOf(y.trim()).floatValue()));}
+catch(NumberFormatException nf)
+{
+System.out.println(nf.getMessage());
+}
+      }
+    
+      if(bc==bt[4]||bc==bt[5]||bc==bt[6]||bc==bt[8]||bc==bt[9]||bc==bt[10]||bc==bt[12]||bc==bt[13]||bc==bt[14]||bc==bt[16] || bc==bt[17])
+       {
+          if(y.equals("0") || flag==1)
+          {
+             t.setText(x);
+             flag=0;
+          }
+          else
+          t.setText(y+x);
+       }
+      
+      if(x.equals("C"))
+       {
+         t.setText("0");
+         flag=0;op="";
+       }
+      if(x.equals("BACK"))
+       {
+         int l=y.length();
+         y=y.substring(0,l-1);
+         t.setText(y);
+       }
+
+     }
+  } 
+  public static void main(String agrs[])
+  {
+      JFrame.setDefaultLookAndFeelDecorated(true);
+    new Calculator();
+  }
+}
