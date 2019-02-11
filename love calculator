@@ -1,0 +1,166 @@
+# small-projects-games
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.net.URL;
+import java.applet.Applet;
+import java.applet.AudioClip;
+class LoveCal extends JFrame
+{
+    JLabel j=new JLabel("<html><h1 style='color:white;font-family:lucida calligraphy'>C@lcul@te Your Love !!!</h1></html>");
+
+  JTextField t1=new JTextField("Enter Your Name");
+  JTextField t2=new JTextField("Enter Your Partner's Name");
+  JTextField t3=new JTextField("LOVE PERCENT");
+  JButton bt=new JButton("CALCULATE");
+  boolean stop=false;
+
+  public LoveCal()
+  {
+      super("Love Calculator");
+      setSize(400,400);
+      //setLayout(null);
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      setResizable(false);
+      setLocationRelativeTo(null);
+      playClip();
+      setVisible(true);
+
+      j.setBounds(40,10,320,20);
+
+      t1.setBounds(40,60,150,50);
+      t2.setBounds(220,60,150,50);
+      t3.setBounds(150,160,100,50);
+      bt.setBounds(140,250,120,60);
+       setLayout(null);
+//getContentPane().setBackground(Color.red);
+       setContentPane(new JLabel(new ImageIcon("D:\\java-programs\\GUI\\pics\\Love.jpeg")));
+
+    add(j);
+
+       add(t1);
+      add(t2);
+       add(t3);
+      add(bt);
+
+      Listener lis=new Listener();
+      bt.addActionListener(lis);
+      List l=new List();
+      t1.addMouseListener(l);
+      t2.addMouseListener(l);
+      j.addMouseListener(new BlinkListener());
+      new BlinkThread().start();
+      setVisible(true);
+  }
+  class BlinkThread extends Thread
+  {
+    public void run()
+    {
+      boolean blink=false;
+      while(true)
+      {
+          if(!stop)
+          {
+             j.setVisible(blink=!blink);
+             try{
+             Thread.sleep(100);}
+             catch(Exception ex){}
+          }
+      }
+    }
+  }
+  class BlinkListener extends MouseAdapter
+  {
+    public void mouseEntered(MouseEvent evt)
+    {
+        stop=true;
+        j.setVisible(true);
+    }
+    public void mouseExited(MouseEvent evt)
+    {
+        stop=false;
+    }
+  }
+
+  class Listener implements ActionListener
+  {
+    public void actionPerformed(ActionEvent evt)
+    {
+       //JButton bc=(JButton)evt.getSource();
+       String x= t1.getText();
+       String y= t2.getText();
+       if(x.equals("") || y.equals("") || x.equals("Enter Your Name") || y.equals("Enter Your Partner's Name"))
+        {
+         JOptionPane.showMessageDialog(LoveCal.this,"Fill Up The Entries First !!!");
+         return;
+        }
+        //if(!x.equals("raksha") && !y.equals("raksha"))
+            //{
+         //JOptionPane.showMessageDialog(LoveCal.this,"Sorry!!! Applicable to raksha only");
+         //return;
+       // }
+       int s1=0,s2=0;
+       int total=0,per=0;
+       if(x.equals("raksha") && y.equals("shashwat"))
+        {
+            //new Buffer().start();
+            t3.setText("0"+" "+"%");
+         }
+        else
+        {
+        for(int i=0;i<x.length();i++)
+       {
+           char ch=x.charAt(i);
+           int a=ch;
+           s1=s1+a;
+       }
+       for(int i=0;i<y.length();i++)
+       {
+           char ch=y.charAt(i);
+           int a=ch;
+           s2=s2+a;
+       }
+       total=s1+s2;
+       per=total%100;
+       //new Buffer().start();
+       t3.setText(String.valueOf(per)+" "+"%");}
+    }
+  }
+  class List extends MouseAdapter
+  {
+   public void mouseClicked(MouseEvent evt)
+   {
+       if(evt.getSource()==t1)
+        t1.setText("");
+        if(evt.getSource()==t2)
+        t2.setText("");
+
+   }
+  }
+  void playClip()
+  {
+      AudioClip clip=Applet.newAudioClip(getClass().getResource("sounds/r.wav"));
+      clip.loop();
+  }
+  /*class Buffer extends Thread
+  {
+    public void run()
+    {
+      for(int i=0;i<10;i++)
+      {try{
+      Thread.sleep(100);}
+      catch(Exception ex){}
+      bt.setIcon(new ImageIcon(getClass().getResource("pics/bt.jpeg")));
+      }
+
+    }
+  }*/
+  public static void main(String args[])
+  {
+      JFrame.setDefaultLookAndFeelDecorated(true);
+      new LoveCal();
+  }
+
+}
+
